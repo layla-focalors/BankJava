@@ -47,7 +47,9 @@ class Account implements Bankable {
     public int deposit(int amount) {
         this.deposit += amount;
         this.total_deposit += amount;
-        this.history[this.payment_no] = new printBankHistory("입금", amount);
+        LocalDate now = LocalDate.now();
+        String payments = "입금 " + now.toString();
+        this.history[this.payment_no] = new printBankHistory(payments, amount);
         this.payment_no++;
         return amount;
     }
@@ -402,11 +404,14 @@ class Account_manager {
     }
 
     void printMenu() {
+        System.out.println("-------- LaylaBank --------");
         System.out.println("1. 계좌 생성");
         System.out.println("2. 계좌 조회");
+        System.out.println("-------- Account Actions --------");
         System.out.println("3. 입금");
         System.out.println("4. 출금");
         System.out.println("5. 결제");
+        System.out.println("6. 이체");
         System.out.println("0. 종료");
         System.out.print("입력 : ");
     }
@@ -463,7 +468,7 @@ public class bank {
                     account_number = sc.next();
                     System.out.print("출금액 : ");
                     amount = sc.nextInt();
-                    String paytitle = "출금" + now.toString();
+                    String paytitle = "출금 " + now.toString();
                     account_manager.withdraw(account_number, amount, paytitle);
                 }
                 case 5 -> {
@@ -473,7 +478,7 @@ public class bank {
                     account_number = sc.next();
                     System.out.print("결제액 : ");
                     amount = sc.nextInt();
-                    String paytitle = "결제" + now.toString();
+                    String paytitle = "결제 " + now.toString();
                     account_manager.paySomething(account_number, amount, paytitle);
                 }
                 case 6 -> {
@@ -485,7 +490,7 @@ public class bank {
                     account_number = sc.next();
                     System.out.println("이체액 : ");
                     amount = sc.nextInt();
-                    String paytitle = "이체" + now.toString();
+                    String paytitle = "이체 " + now.toString();
                     account_manager.paySomething(account_number, amount, paytitle);
                 }
                 default -> System.out.println("LaylaBank : 존재하지 않는 메뉴입니다. 다시 확인해주세요");
