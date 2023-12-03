@@ -20,7 +20,7 @@ class printBankHistory {
 class Account implements Bankable {
     String account_nickname; // 계좌 별칭
     String account_number; // 계좌 번호
-    String passwd; // 계좌 비밀번호
+    private final String passwd; // 계좌 비밀번호
     String owner;// 계좌 주인
     int total_amount_used; // 계좌에서 사용한 금액들의 총 합계
     int total_deposit; // 계좌에 입금한 금액들의 총 합계
@@ -43,6 +43,7 @@ class Account implements Bankable {
         this.history = new printBankHistory[100];
     }
     String getAccountNumber() { return this.account_number; }
+    String GetPassword() { return this.passwd; }
 
     public int deposit(int amount) {
         this.deposit += amount;
@@ -65,13 +66,14 @@ class Account implements Bankable {
         return amount;
     }
     public void printBankInfo() {
-        System.out.println("계좌 정보 출력 -----------------------------");
+        System.out.println("------------ 계좌 정보 출력 ------------");
         System.out.printf("계좌 별칭 : %s\n", this.account_nickname);
         System.out.printf("계좌 번호 : %s\n", this.account_number);
         System.out.printf("계좌 주인 : %s\n", this.owner);
         System.out.printf("계좌 잔액 : %d원\n", this.deposit);
         System.out.printf("총 입금액 : %d원\n", this.total_deposit);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
+        System.out.println("계좌 비밀번호 : %s" + this.GetPassword());
         System.out.println("-------------------------------------------");
     }
     public void printBankHistory() {
@@ -127,6 +129,7 @@ class ISA_Account extends Account {
         System.out.printf("총 입금액 : %d원\n", this.total_deposit * 365);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
+        System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("-------------------------------------------");
     }
 }
@@ -172,6 +175,7 @@ class saving_account extends Account {
         System.out.printf("총 입금액 : %d원\n", this.total_deposit);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
+        System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("-------------------------------------------");
     }
 }
@@ -217,6 +221,7 @@ class minus_Account extends Account {
         System.out.printf("총 입금액 : %d원\n", this.total_deposit);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
+        System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("-------------------------------------------");
     }
 }
@@ -260,6 +265,7 @@ class stock_Account extends Account {
         System.out.printf("총 입금액 : %d원\n", this.total_deposit);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
+        System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("-------------------------------------------");
     }
 }
@@ -303,6 +309,7 @@ class business_Account extends Account {
         System.out.printf("총 입금액 : %d원\n", this.total_deposit);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
+        System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("-------------------------------------------");
     }
 }
@@ -346,6 +353,7 @@ class Payment_Account extends Account {
         System.out.printf("총 입금액 : %d원\n", this.total_deposit);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
+        System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("-------------------------------------------");
     }
 }
@@ -360,6 +368,14 @@ class Account_manager {
     }
 
     void createAccount(int option){
+        try {
+            if(this.account_no >= this.accounts.length) {
+                throw new Exception("계좌를 더 이상 생성할 수 없습니다.");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         Scanner sc = new Scanner(System.in);
         String account_nickname, account_number, owner, passwd;
         int deposit, withdraw;
