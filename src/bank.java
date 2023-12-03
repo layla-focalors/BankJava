@@ -273,12 +273,14 @@ class stock_Account extends Account {
 class business_Account extends Account {
     int interest_rate; // 이자율
     int total_interest; // 총 이자액
+    String business_number; // 사업자 번호
 
     business_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate) {
+            , String passwd, int interest_rate, String business_number) {
         super(account_nickname, account_number, owner, passwd);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
+        this.business_number = business_number;
     }
 
     public int deposit(int amount) {
@@ -310,6 +312,7 @@ class business_Account extends Account {
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
+        System.out.println("사업자번호 : " + this.business_number);
         System.out.println("-------------------------------------------");
     }
 }
@@ -410,7 +413,8 @@ class Account_manager {
         } else if(option == 3){
             System.out.println("--------- 사업자(법인/개인사업자) ---------");
             System.out.print("이자율 : "); withdraw = sc.nextInt();
-            this.accounts[this.account_no++] = new business_Account(account_nickname, account_number, owner, passwd, withdraw);
+            System.out.print("유효한 사업자/법인 번호 : "); String business_number = sc.next();
+            this.accounts[this.account_no++] = new business_Account(account_nickname, account_number, owner, passwd, withdraw, business_number);
             System.out.println("사업자 계좌가 생성되었습니다.");
         } else if(option == 4){
             System.out.println("--------- 입출금 ---------");
