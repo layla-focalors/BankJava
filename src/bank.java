@@ -381,6 +381,13 @@ class Account_manager {
         }
     }
 
+    void SendMoney(String account_number, int amount, String payment_title) {
+        int account_idx = this.findAccount(account_number);
+        if(account_idx != -1) {
+            this.accounts[account_idx].withdraw(amount, payment_title);
+        }
+    }
+
     void printMenu() {
         System.out.println("1. 계좌 생성");
         System.out.println("2. 계좌 조회");
@@ -397,9 +404,73 @@ public class bank {
         Scanner sc = new Scanner(System.in);
         Account_manager account_manager = new Account_manager(1000);
         boolean exit = false;
+        String account_number, account_nickname, owner, passwd;
+        int deposit, withdraw, option, amount;
 
         do {
-            System.out.println("11");
+            account_manager.printMenu();
+            option = sc.nextInt();
+            switch (option){
+                case 0 -> {
+                    System.out.println("LaylaBank를 사용해주셔서 감사합니다. \n프로그램을 종료합니다.");
+                    exit = true;
+                }
+                case 1 -> {
+                    System.out.println("--------- 계좌 생성 ---------");
+                    System.out.println("0. ISA");
+                    System.out.println("1. 적금");
+                    System.out.println("2. 증권");
+                    System.out.println("3. 사업자(법인/개인사업자)");
+                    System.out.println("4. 입출금");
+                    System.out.print("입력 : ");
+                    account_manager.createAccount(sc.nextInt());
+                }
+                case 2 -> {
+                    System.out.println("--------- 계좌 조회 ---------");
+                    System.out.print("계좌 번호 : ");
+                    int account_index = account_manager.findAccount(sc.next());
+                    if(account_index == -1){
+                        System.out.println("계좌가 존재하지 않습니다.");
+                    } else {
+                        account_manager.printAccountInfo(account_index);
+                    }
+                }
+                case 3 -> {
+                    System.out.println("--------- 입금 ---------");
+                    System.out.print("계좌 번호 : ");
+                    account_number = sc.next();
+                    System.out.print("입금액 : ");
+                    amount = sc.nextInt();
+                    account_manager.deposit(account_number, amount);
+                }
+                case 4 -> {
+                    System.out.println("--------- 출금 ---------");
+                    System.out.print("계좌 번호 : ");
+                    account_number = sc.next();
+                    System.out.print("출금액 : ");
+                    amount = sc.nextInt();
+                    account_manager.withdraw(account_number, amount, "출금");
+                }
+                case 5 -> {
+                    System.out.println("--------- 결제 ---------");
+                    System.out.print("계좌 번호 : ");
+                    account_number = sc.next();
+                    System.out.print("결제액 : ");
+                    amount = sc.nextInt();
+                    account_manager.paySomething(account_number, amount, "결제");
+                }
+                case 6 -> {
+                    System.out.println("--------- 이체 ---------");
+                    System.out.println("이체할 계좌 번호 : ");
+                    account_number = sc.next();
+                    System.out.println("이체받을 계좌 번호 : ");
+                    account_number = sc.next();
+                    System.out.println("이체액 : ");
+                    amount = sc.nextInt();
+                    account_manager.paySomething(account_number, amount, "이체");
+                }
+                default -> System.out.println("LaylaBank : 존재하지 않는 메뉴입니다. 다시 확인해주세요");
+            }
         } while(!exit);
     }
 }
