@@ -345,7 +345,61 @@ class Account_manager {
             System.out.println("잘못된 입력입니다.");
         }
     }
+
+    int findAccount(String account_number) {
+        for(int i=0;i<this.account_no;i++) {
+            if(this.accounts[i].getAccountNumber().equals(account_number)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void printAccountInfo(int account_idx) {
+        this.accounts[account_idx].printBankInfo();
+        this.accounts[account_idx].printBankHistory();
+    }
+
+    void deposit(String account_number, int amount) {
+        int account_idx = this.findAccount(account_number);
+        if(account_idx != -1) {
+            this.accounts[account_idx].deposit(amount);
+        }
+    }
+
+    void withdraw(String account_number, int amount, String payment_title) {
+        int account_idx = this.findAccount(account_number);
+        if(account_idx != -1) {
+            this.accounts[account_idx].withdraw(amount, payment_title);
+        }
+    }
+
+    void paySomething(String account_number, int amount, String payment_title) {
+        int account_idx = this.findAccount(account_number);
+        if(account_idx != -1) {
+            this.accounts[account_idx].withdraw(amount, payment_title);
+        }
+    }
+
+    void printMenu() {
+        System.out.println("1. 계좌 생성");
+        System.out.println("2. 계좌 조회");
+        System.out.println("3. 입금");
+        System.out.println("4. 출금");
+        System.out.println("5. 결제");
+        System.out.println("0. 종료");
+        System.out.print("입력 : ");
+    }
 }
 
 public class bank {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        Account_manager account_manager = new Account_manager(1000);
+        boolean exit = false;
+
+        do {
+            System.out.println("11");
+        } while(!exit);
+    }
 }
