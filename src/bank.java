@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 interface Bankable {
@@ -85,12 +86,14 @@ class Account implements Bankable {
 class ISA_Account extends Account {
     int interest_rate; // 이자율
     int total_interest; // 총 이자액
+    int total_inbound; // 총 가입 기간
 
     ISA_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate) {
+            , String passwd, int interest_rate, int total_inbound){
         super(account_nickname, account_number, owner, passwd);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
+        this.total_inbound = total_inbound;
     }
 
     public int deposit(int amount) {
@@ -118,7 +121,8 @@ class ISA_Account extends Account {
         System.out.printf("계좌 번호 : %s\n", this.getAccountNumber());
         System.out.printf("계좌 주인 : %s\n", this.owner);
         System.out.printf("계좌 잔액 : %d원\n", this.deposit);
-        System.out.printf("총 입금액 : %d원\n", this.total_deposit);
+        System.out.printf("잔여 가입일 : %d일\n", this.total_inbound);
+        System.out.printf("총 입금액 : %d원\n", this.total_deposit * 365);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("-------------------------------------------");
@@ -129,8 +133,10 @@ class saving_account extends Account {
     int interest_rate; // 이자율
     int total_interest; // 총 이자액
 
+    int total_inbound; // 총 가입 기간
+
     saving_account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate) {
+            , String passwd, int interest_rate, int total_inbound) {
         super(account_nickname, account_number, owner, passwd);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
@@ -318,13 +324,20 @@ class Account_manager {
 
         if(option == 0){
             System.out.println("--------- ISA ---------");
+            System.out.println("가입 기간을 입력하세요(년)\n최소 가입 기간은 시행령 기준 3년입니다.\n최소 가입 기간보다 가입일지 작은 경우 자동으로 3년으로 변경됩니다.");
+            System.out.print("가입 기간 : "); int year = sc.nextInt();
             System.out.print("이자율 : "); withdraw = sc.nextInt();
-            this.accounts[this.account_no++] = new ISA_Account(account_nickname, account_number, owner, passwd, withdraw);
+            if (year < 3) {
+                year = 3;
+            }
+            this.accounts[this.account_no++] = new ISA_Account(account_nickname, account_number, owner, passwd, withdraw, year);
             System.out.println("ISA 계좌가 생성되었습니다.");
         } else if(option == 1){
             System.out.println("--------- 적금 ---------");
             System.out.print("이자율 : "); withdraw = sc.nextInt();
-            this.accounts[this.account_no++] = new saving_account(account_nickname, account_number, owner, passwd, withdraw);
+            System.out.println("가입 기간을 입력하세요(년)");
+            System.out.print("가입 기간 : "); int year = sc.nextInt();
+            this.accounts[this.account_no++] = new saving_account(account_nickname, account_number, owner, passwd, withdraw, year);
             System.out.println("적금 계좌가 생성되었습니다.");
         } else if(option == 2){
             System.out.println("--------- 증권 ---------");
@@ -445,29 +458,35 @@ public class bank {
                 }
                 case 4 -> {
                     System.out.println("--------- 출금 ---------");
+                    LocalDate now = LocalDate.now();
                     System.out.print("계좌 번호 : ");
                     account_number = sc.next();
                     System.out.print("출금액 : ");
                     amount = sc.nextInt();
-                    account_manager.withdraw(account_number, amount, "출금");
+                    String paytitle = "출금" + now.toString();
+                    account_manager.withdraw(account_number, amount, paytitle);
                 }
                 case 5 -> {
                     System.out.println("--------- 결제 ---------");
+                    LocalDate now = LocalDate.now();
                     System.out.print("계좌 번호 : ");
                     account_number = sc.next();
                     System.out.print("결제액 : ");
                     amount = sc.nextInt();
-                    account_manager.paySomething(account_number, amount, "결제");
+                    String paytitle = "결제" + now.toString();
+                    account_manager.paySomething(account_number, amount, paytitle);
                 }
                 case 6 -> {
                     System.out.println("--------- 이체 ---------");
+                    LocalDate now = LocalDate.now();
                     System.out.println("이체할 계좌 번호 : ");
                     account_number = sc.next();
                     System.out.println("이체받을 계좌 번호 : ");
                     account_number = sc.next();
                     System.out.println("이체액 : ");
                     amount = sc.nextInt();
-                    account_manager.paySomething(account_number, amount, "이체");
+                    String paytitle = "이체" + now.toString();
+                    account_manager.paySomething(account_number, amount, paytitle);
                 }
                 default -> System.out.println("LaylaBank : 존재하지 않는 메뉴입니다. 다시 확인해주세요");
             }
