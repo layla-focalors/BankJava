@@ -144,7 +144,7 @@ class saving_account extends Account {
         this.total_interest = 0;
     }
 
-    public int deposit(int amount) {
+    public int deposit(int amount, String paytitle) {
         this.deposit += amount;
         this.total_deposit += amount;
         this.total_interest += (int)(amount * (this.interest_rate / 100.0));
@@ -155,6 +155,51 @@ class saving_account extends Account {
     public int withdraw(int amount, String payment_title) {
         if(this.deposit < amount) {
             System.out.println("잔액이 부족합니다.");
+            return 0;
+        }
+        this.deposit -= amount;
+        this.total_amount_used += amount;
+        this.history[this.payment_no] = new printBankHistory(payment_title, amount);
+        this.payment_no++;
+        return amount;
+    }
+    public void printBankInfo() {
+        System.out.println("계좌 정보 출력 -----------------------------");
+        System.out.printf("계좌 별칭 : %s\n", this.account_nickname);
+        System.out.printf("계좌 번호 : %s\n", this.getAccountNumber());
+        System.out.printf("계좌 주인 : %s\n", this.owner);
+        System.out.printf("계좌 잔액 : %d원\n", this.deposit);
+        System.out.printf("총 입금액 : %d원\n", this.total_deposit);
+        System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
+        System.out.printf("총 이자액 : %d원\n", this.total_interest);
+        System.out.println("-------------------------------------------");
+    }
+}
+
+class minus_Account extends Account {
+    int interest_rate; // 이자율
+    int total_interest; // 총 이자액
+    int max_money; // 한도
+
+    minus_Account(String account_nickname, String account_number, String owner
+            , String passwd, int interest_rate, int max_money) {
+        super(account_nickname, account_number, owner, passwd);
+        this.interest_rate = interest_rate;
+        this.total_interest = 0;
+        this.max_money = max_money;
+    }
+
+    public int deposit(int amount) {
+        this.deposit += amount;
+        this.total_deposit += amount;
+        this.total_interest += (int)(amount * (this.interest_rate / 100.0));
+        this.history[this.payment_no] = new printBankHistory("입금", amount);
+        this.payment_no++;
+        return amount;
+    }
+    public int withdraw(int amount, String payment_title) {
+        if(this.total_amount_used < max_money){
+            System.out.println("한도를 초과하였습니다.");
             return 0;
         }
         this.deposit -= amount;
@@ -356,7 +401,13 @@ class Account_manager {
             System.out.print("이자율 : "); withdraw = sc.nextInt();
             this.accounts[this.account_no++] = new Payment_Account(account_nickname, account_number, owner, passwd, withdraw);
             System.out.println("입출금 계좌가 생성되었습니다.");
-        } else {
+        } else if(option==5){
+            System.out.println("--------- 마이너스 ---------");
+            System.out.print("한도 : "); int max_money = sc.nextInt();
+            this.accounts[this.account_no++] = new minus_Account(account_nickname, account_number, owner, passwd, 1, max_money);
+            System.out.println("마이너스 계좌가 생성되었습니다.");
+        }
+        else {
             System.out.println("잘못된 입력입니다.");
         }
     }
@@ -412,6 +463,10 @@ class Account_manager {
         System.out.println("4. 출금");
         System.out.println("5. 결제");
         System.out.println("6. 이체");
+        System.out.println("-------- Money Actions --------");
+        System.out.println("7. 대출");
+        System.out.println("8. 대출 상환");
+        System.out.println("-------- System Actions --------");
         System.out.println("0. 종료");
         System.out.print("입력 : ");
     }
@@ -440,6 +495,7 @@ public class bank {
                     System.out.println("2. 증권");
                     System.out.println("3. 사업자(법인/개인사업자)");
                     System.out.println("4. 입출금");
+                    System.out.println("5. 마이너스");
                     System.out.print("입력 : ");
                     account_manager.createAccount(sc.nextInt());
                 }
@@ -491,6 +547,26 @@ public class bank {
                     System.out.println("이체액 : ");
                     amount = sc.nextInt();
                     String paytitle = "이체 " + now.toString();
+                    account_manager.paySomething(account_number, amount, paytitle);
+                }
+                case 7 -> {
+                    System.out.println("--------- 대출 ---------");
+                    System.out.print("계좌 번호 : ");
+                    account_number = sc.next();
+                    System.out.print("대출액 : ");
+                    amount = sc.nextInt();
+                    System.out.println("상환일 : ");
+                    String paytitle = sc.next();
+                    account_manager.deposit(account_number, amount);
+                }
+                case 8 -> {
+                    System.out.println("--------- 대출 상환 ---------");
+                    System.out.print("계좌 번호 : ");
+                    account_number = sc.next();
+                    System.out.print("상환액 : ");
+                    amount = sc.nextInt();
+                    LocalDate now = LocalDate.now();
+                    String paytitle = "대출 상환 " + now.toString();
                     account_manager.paySomething(account_number, amount, paytitle);
                 }
                 default -> System.out.println("LaylaBank : 존재하지 않는 메뉴입니다. 다시 확인해주세요");
