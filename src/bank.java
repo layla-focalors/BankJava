@@ -76,6 +76,7 @@ class Account implements Bankable {
         System.out.printf("총 입금액 : %d원\n", this.total_deposit);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.println("계좌 비밀번호 : %s" + this.GetPassword());
+        System.out.println("가입자 생년월일 : " + this.Birth);
         System.out.println("-------------------------------------------");
     }
     public void printBankHistory() {
@@ -132,6 +133,7 @@ class ISA_Account extends Account {
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
+        System.out.println("가입자 생년월일 : " + this.Birth);
         System.out.println("-------------------------------------------");
     }
 }
@@ -178,6 +180,7 @@ class saving_account extends Account {
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
+        System.out.println("가입자 생년월일 : " + this.Birth);
         System.out.println("-------------------------------------------");
     }
 }
@@ -224,6 +227,7 @@ class minus_Account extends Account {
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
+        System.out.println("가입자 생년월일 : " + this.Birth);
         System.out.println("-------------------------------------------");
     }
 }
@@ -268,6 +272,7 @@ class stock_Account extends Account {
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
+        System.out.println("가입자 생년월일 : " + this.Birth);
         System.out.println("-------------------------------------------");
     }
 }
@@ -315,6 +320,7 @@ class business_Account extends Account {
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("사업자번호 : " + this.business_number);
+        System.out.println("가입자 생년월일 : " + this.Birth);
         System.out.println("-------------------------------------------");
     }
 }
@@ -359,6 +365,7 @@ class Payment_Account extends Account {
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
+        System.out.println("가입자 생년월일 : " + this.Birth);
         System.out.println("-------------------------------------------");
     }
 }
