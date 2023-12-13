@@ -208,6 +208,7 @@ class minus_Account extends Account {
     }
     public int withdraw(int amount, String payment_title) {
         if(this.total_amount_used > max_money){
+//            System.out.println("DEBUG : " + this.total_amount_used + " : " + max_money);
             System.out.println("한도를 초과하였습니다.");
             return 0;
         }
@@ -228,6 +229,7 @@ class minus_Account extends Account {
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("가입자 생년월일 : " + this.Birth);
+        System.out.println("한도 금액 : " + this.max_money + "원");
         System.out.println("-------------------------------------------");
     }
 }
