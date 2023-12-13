@@ -563,6 +563,9 @@ class Account_manager {
         System.out.println("-------- LaylaBank --------");
         System.out.println("약관에 대한 항목을 확인해주세요.");
         System.out.println("https://banks.layla-focalors.tech");
+
+        System.out.println("----- 깃허브 소스 코드 보기 -----");
+        System.out.println("[서준혁] : https://github.com/layla-focalors/BankJava");
     }
 }
 
