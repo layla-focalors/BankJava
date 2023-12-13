@@ -766,8 +766,14 @@ class Account_manager {
 
     int findAccount(String account_number) {
         for(int i=0;i<this.account_no;i++) {
-            if(this.accounts[i].getAccountNumber().equals(account_number)) {
-                return i;
+            try {
+                if (this.accounts[i].getAccountNumber().equals(account_number)) {
+                    return i;
+                } else if (this.accounts[i] == null) {
+                    return -2;
+                }
+            } catch (Exception e) {
+                System.out.println("이미 삭제된 계좌입니다!");
             }
         }
         return -1;
@@ -946,7 +952,10 @@ public class bank {
                     int account_index = account_manager.findAccount(account_number);
                     if(account_index == -1){
                         System.out.println("계좌가 존재하지 않습니다.");
-                    } else {
+                    } else if(account_index == -2){
+                        System.out.println("삭제된 계좌입니다.");
+                    }
+                    else {
                         if(account_manager.accounts[account_index].GetPassword().equals(passwd)){
                             account_manager.accounts[account_index] = null;
                             System.out.println("계좌가 삭제되었습니다.");
