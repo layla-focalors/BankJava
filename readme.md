@@ -59,4 +59,19 @@
    System.out.println(e.getMessage());
    return;
    }</pre>
+8. 예외처리2 <pre>int findAccount(String account_number) {
+   for(int i=0;i<this.account_no;i++) {
+   try {
+   if (this.accounts[i].getAccountNumber().equals(account_number)) {
+   return i;
+   } else if (this.accounts[i] == null) {
+   return -2;
+   }
+   } catch (Exception e) {
+   System.out.println("이미 삭제된 계좌입니다!");
+   }
+   }
+   return -1;
+   }</pre>
 
+### 시연 영상 (Github Storage)

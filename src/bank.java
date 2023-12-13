@@ -358,6 +358,14 @@ class business_Account extends Account {
         this.payment_no++;
         return amount;
     }
+    public int getmoney(int amount) {
+        this.deposit += amount;
+        this.total_deposit += amount;
+        this.total_interest += (int)(amount * (this.interest_rate / 100.0));
+        this.history[this.payment_no] = new printBankHistory("대출", amount);
+        this.payment_no++;
+        return amount;
+    }
     public int withdraw(int amount, String payment_title) {
         if(this.deposit < amount) {
             System.out.println("잔액이 부족합니다.");
@@ -801,6 +809,14 @@ class Account_manager {
     void paySomething(String account_number, int amount, String payment_title) {
         int account_idx = this.findAccount(account_number);
         if(account_idx != -1) {
+            this.accounts[account_idx].withdraw(amount, payment_title);
+        }
+    }
+
+    void getSomething(String account_number, int amount, String payment_title) {
+        int account_idx = this.findAccount(account_number);
+        if(account_idx != -1) {
+            payment_title = "대출";
             this.accounts[account_idx].withdraw(amount, payment_title);
         }
     }
