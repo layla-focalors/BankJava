@@ -26,12 +26,13 @@ class Account implements Bankable {
     int total_deposit; // 계좌에 입금한 금액들의 총 합계
     int payment_no; // 계좌를 총 몇 번 결제 했는지.
     int deposit; // 계좌 잔액
+    String Birth; // 생년월일
 
     // 계좌 이용 내역
     printBankHistory[] history;
 
     //Account 클래스 초기화
-    Account(String account_nickname, String account_number, String owner, String passwd) {
+    Account(String account_nickname, String account_number, String owner, String passwd, String Birth) {
         this.account_nickname = account_nickname;
         this.account_number = account_number;
         this.owner = owner;
@@ -41,6 +42,7 @@ class Account implements Bankable {
         this.payment_no = 0;
         this.deposit = 0;
         this.history = new printBankHistory[100];
+        this.Birth = Birth;
     }
     String getAccountNumber() { return this.account_number; }
     String GetPassword() { return this.passwd; }
@@ -93,8 +95,8 @@ class ISA_Account extends Account {
     int total_inbound; // 총 가입 기간
 
     ISA_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate, int total_inbound){
-        super(account_nickname, account_number, owner, passwd);
+            , String passwd, int interest_rate, int total_inbound, String Birth){
+        super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
         this.total_inbound = total_inbound;
@@ -125,7 +127,7 @@ class ISA_Account extends Account {
         System.out.printf("계좌 번호 : %s\n", this.getAccountNumber());
         System.out.printf("계좌 주인 : %s\n", this.owner);
         System.out.printf("계좌 잔액 : %d원\n", this.deposit);
-        System.out.printf("잔여 가입일 : %d일\n", this.total_inbound);
+        System.out.printf("잔여 가입일 : %d년\n", this.total_inbound);
         System.out.printf("총 입금액 : %d원\n", this.total_deposit * 365);
         System.out.printf("총 사용액 : %d원\n", this.total_amount_used);
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
@@ -141,8 +143,8 @@ class saving_account extends Account {
     int total_inbound; // 총 가입 기간
 
     saving_account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate, int total_inbound) {
-        super(account_nickname, account_number, owner, passwd);
+            , String passwd, int interest_rate, int total_inbound, String Birth) {
+        super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
     }
@@ -186,8 +188,8 @@ class minus_Account extends Account {
     int max_money; // 한도
 
     minus_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate, int max_money) {
-        super(account_nickname, account_number, owner, passwd);
+            , String passwd, int interest_rate, int max_money, String Birth) {
+        super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
         this.max_money = max_money;
@@ -202,7 +204,7 @@ class minus_Account extends Account {
         return amount;
     }
     public int withdraw(int amount, String payment_title) {
-        if(this.total_amount_used < max_money){
+        if(this.total_amount_used > max_money){
             System.out.println("한도를 초과하였습니다.");
             return 0;
         }
@@ -231,8 +233,8 @@ class stock_Account extends Account {
     int total_interest; // 총 이자액
 
     stock_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate) {
-        super(account_nickname, account_number, owner, passwd);
+            , String passwd, int interest_rate, String Birth) {
+        super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
     }
@@ -276,8 +278,8 @@ class business_Account extends Account {
     String business_number; // 사업자 번호
 
     business_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate, String business_number) {
-        super(account_nickname, account_number, owner, passwd);
+            , String passwd, int interest_rate, String business_number, String Birth) {
+        super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
         this.business_number = business_number;
@@ -322,8 +324,8 @@ class Payment_Account extends Account {
     int total_interest; // 총 이자액
 
     Payment_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate) {
-        super(account_nickname, account_number, owner, passwd);
+            , String passwd, int interest_rate, String Birth) {
+        super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
     }
@@ -387,6 +389,7 @@ class Account_manager {
         System.out.print("계좌 번호 : "); account_number = sc.next();
         System.out.print("계좌 주인 : "); owner = sc.next();
         System.out.print("계좌 암호 : "); passwd = sc.next();
+        System.out.print("생년월일 : "); String Birth = sc.next();
 
         if(option == 0){
             System.out.println("--------- ISA ---------");
@@ -396,35 +399,35 @@ class Account_manager {
             if (year < 3) {
                 year = 3;
             }
-            this.accounts[this.account_no++] = new ISA_Account(account_nickname, account_number, owner, passwd, withdraw, year);
+            this.accounts[this.account_no++] = new ISA_Account(account_nickname, account_number, owner, passwd, withdraw, year, Birth);
             System.out.println("ISA 계좌가 생성되었습니다.");
         } else if(option == 1){
             System.out.println("--------- 적금 ---------");
             System.out.print("이자율 : "); withdraw = sc.nextInt();
             System.out.println("가입 기간을 입력하세요(년)");
             System.out.print("가입 기간 : "); int year = sc.nextInt();
-            this.accounts[this.account_no++] = new saving_account(account_nickname, account_number, owner, passwd, withdraw, year);
+            this.accounts[this.account_no++] = new saving_account(account_nickname, account_number, owner, passwd, withdraw, year, Birth);
             System.out.println("적금 계좌가 생성되었습니다.");
         } else if(option == 2){
             System.out.println("--------- 증권 ---------");
             System.out.print("이자율 : "); withdraw = sc.nextInt();
-            this.accounts[this.account_no++] = new stock_Account(account_nickname, account_number, owner, passwd, withdraw);
+            this.accounts[this.account_no++] = new stock_Account(account_nickname, account_number, owner, passwd, withdraw, Birth);
             System.out.println("증권 계좌가 생성되었습니다.");
         } else if(option == 3){
             System.out.println("--------- 사업자(법인/개인사업자) ---------");
             System.out.print("이자율 : "); withdraw = sc.nextInt();
             System.out.print("유효한 사업자/법인 번호 : "); String business_number = sc.next();
-            this.accounts[this.account_no++] = new business_Account(account_nickname, account_number, owner, passwd, withdraw, business_number);
+            this.accounts[this.account_no++] = new business_Account(account_nickname, account_number, owner, passwd, withdraw, business_number, Birth);
             System.out.println("사업자 계좌가 생성되었습니다.");
         } else if(option == 4){
             System.out.println("--------- 입출금 ---------");
             System.out.print("이자율 : "); withdraw = sc.nextInt();
-            this.accounts[this.account_no++] = new Payment_Account(account_nickname, account_number, owner, passwd, withdraw);
+            this.accounts[this.account_no++] = new Payment_Account(account_nickname, account_number, owner, passwd, withdraw, Birth);
             System.out.println("입출금 계좌가 생성되었습니다.");
         } else if(option==5){
             System.out.println("--------- 마이너스 ---------");
             System.out.print("한도 : "); int max_money = sc.nextInt();
-            this.accounts[this.account_no++] = new minus_Account(account_nickname, account_number, owner, passwd, 1, max_money);
+            this.accounts[this.account_no++] = new minus_Account(account_nickname, account_number, owner, passwd, 1, max_money, Birth);
             System.out.println("마이너스 계좌가 생성되었습니다.");
         }
         else {
