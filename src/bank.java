@@ -263,9 +263,12 @@ class minus_Account extends Account {
 class stock_Account extends Account {
     int interest_rate; // 이자율
     int total_interest; // 총 이자액
+    int stock; // 연결할 증권사
+    String account2; // 연결할 계좌
+
 
     stock_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate, String Birth) {
+            , String passwd, int interest_rate, String Birth, int stock, String account2) {
         super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
@@ -301,6 +304,32 @@ class stock_Account extends Account {
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("가입자 생년월일 : " + this.Birth);
+        String output = "";
+        if(this.stock == 1){
+            output = "삼성증권";
+        }else if(this.stock == 2){
+            output = "하나금융투자";
+        }else if(this.stock == 3){
+            output = "키움증권";
+        }else if(this.stock == 4){
+            output = "미래에셋대우";
+        }else if(this.stock == 5){
+            output = "KB증권";
+        }else if(this.stock == 6){
+            output = "NH투자증권";
+        }else if(this.stock == 7){
+            output = "이베스트투자증권";
+        }else if(this.stock == 8){
+            output = "케이프투자증권";
+        }else if(this.stock == 9){
+            output = "연결하지 않음";
+        }
+        System.out.println("연결된 증권사 : " + output);
+        String acce = "연결하지 않음";
+        if(this.account2 != "Default"){
+            acce = this.account2;
+        }
+        System.out.println("연결된 계좌 : " + acce);
         System.out.println("-------------------------------------------");
     }
 }
@@ -472,7 +501,243 @@ class Account_manager {
         } else if(option == 2){
             System.out.println("--------- 증권 ---------");
             System.out.print("이자율 : "); withdraw = sc.nextInt();
-            this.accounts[this.account_no++] = new stock_Account(account_nickname, account_number, owner, passwd, withdraw, Birth);
+            System.out.println("연결할 증권사를 선택하세요");
+            System.out.println("-------- 연결 증권사 --------");
+            System.out.println("1. 삼성증권");
+            System.out.println("2. 하나금융투자");
+            System.out.println("3. 키움증권");
+            System.out.println("4. 미래에셋대우");
+            System.out.println("5. KB증권");
+            System.out.println("6. NH투자증권");
+            System.out.println("7. 이베스트투자증권");
+            System.out.println("8. 케이프투자증권");
+            System.out.println("9. 연결하지 않음");
+            System.out.println("---------------------------");
+            String account2 = "Default";
+            System.out.print("입력 : ");
+            int stock = sc.nextInt();
+            switch (stock){
+                case 1 -> {
+                    System.out.println("삼성증권의 계좌와 비밀번호를 입력하세요");
+                    System.out.println("계좌 입력");
+                    System.out.print("입력 : ");
+                    account2 = sc.next();
+                    System.out.println("비밀번호 입력");
+                    System.out.print("입력 : ");
+                    String passwd2 = sc.next();
+                    System.out.println("연결할 계좌 : " + account2);
+                    System.out.println("연결할 비밀번호 : " + passwd2);
+                    System.out.println("---------------------------");
+                    System.out.println("다음에 맞는 보안카드 번호를 입력하세요");
+                    System.out.println("보안카드 숫자 (1) : " + (int) (Math.random() * 9) + 1);
+                    int card = sc.nextInt();
+                    if(card < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (2) : " + (int) (Math.random() * 9) + 1);
+                    int card2 = sc.nextInt();
+                    if(card2 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (3) : " + (int) (Math.random() * 9) + 1);
+                    int card3 = sc.nextInt();
+                    if(card3 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("삼성증권이 연결되었습니다.");
+                }
+                case 2 -> {
+                    System.out.println("하나금융투자의 계좌와 비밀번호를 입력하세요");
+                    System.out.println("계좌 입력");
+                    account2 = sc.next();
+                    System.out.println("비밀번호 입력");
+                    String passwd2 = sc.next();
+                    System.out.println("연결할 계좌 : " + account2);
+                    System.out.println("연결할 비밀번호 : " + passwd2);
+                    System.out.println("---------------------------");
+                    System.out.println("다음에 맞는 보안카드 번호를 입력하세요");
+                    System.out.println("보안카드 숫자 (1) : " + (int) (Math.random() * 9) + 1);
+                    int card = sc.nextInt();
+                    if(card < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (2) : " + (int) (Math.random() * 9) + 1);
+                    int card2 = sc.nextInt();
+                    if(card2 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (3) : " + (int) (Math.random() * 9) + 1);
+                    int card3 = sc.nextInt();
+                    if(card3 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("하나금융투자가 연결되었습니다.");
+                }
+                case 3 -> {
+                    System.out.println("키움증권의 계좌와 비밀번호를 입력하세요");
+                    System.out.println("계좌 입력");
+                    account2 = sc.next();
+                    System.out.println("비밀번호 입력");
+                    String passwd2 = sc.next();
+                    System.out.println("연결할 계좌 : " + account2);
+                    System.out.println("연결할 비밀번호 : " + passwd2);
+                    System.out.println("---------------------------");
+                    System.out.println("다음에 맞는 보안카드 번호를 입력하세요");
+                    System.out.println("보안카드 숫자 (1) : " + (int) (Math.random() * 9) + 1);
+                    int card = sc.nextInt();
+                    if(card < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (2) : " + (int) (Math.random() * 9) + 1);
+                    int card2 = sc.nextInt();
+                    if(card2 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (3) : " + (int) (Math.random() * 9) + 1);
+                    int card3 = sc.nextInt();
+                    if(card3 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("키움증권이 연결되었습니다.");
+                }
+                case 4 -> {
+                    System.out.println("미래에셋대우의 계좌와 비밀번호를 입력하세요");
+                    System.out.println("계좌 입력");
+                    account2 = sc.next();
+                    System.out.println("비밀번호 입력");
+                    String passwd2 = sc.next();
+                    System.out.println("연결할 계좌 : " + account2);
+                    System.out.println("연결할 비밀번호 : " + passwd2);
+                    System.out.println("---------------------------");
+                    System.out.println("다음에 맞는 보안카드 번호를 입력하세요");
+                    System.out.println("보안카드 숫자 (1) : " + (int) (Math.random() * 9) + 1);
+                    int card = sc.nextInt();
+                    if(card < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (2) : " + (int) (Math.random() * 9) + 1);
+                    int card2 = sc.nextInt();
+                    if(card2 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (3) : " + (int) (Math.random() * 9) + 1);
+                    int card3 = sc.nextInt();
+                    if(card3 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("미래에셋대우가 연결되었습니다.");
+                }
+                case 5 -> {
+                    System.out.println("KB증권의 계좌와 비밀번호를 입력하세요");
+                    System.out.println("계좌 입력");
+                    account2 = sc.next();
+                    System.out.println("비밀번호 입력");
+                    String passwd2 = sc.next();
+                    System.out.println("연결할 계좌 : " + account2);
+                    System.out.println("연결할 비밀번호 : " + passwd2);
+                    System.out.println("---------------------------");
+                    System.out.println("다음에 맞는 보안카드 번호를 입력하세요");
+                    System.out.println("보안카드 숫자 (1) : " + (int) (Math.random() * 9) + 1);
+                    int card = sc.nextInt();
+                    if(card < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (2) : " + (int) (Math.random() * 9) + 1);
+                    int card2 = sc.nextInt();
+                    if(card2 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (3) : " + (int) (Math.random() * 9) + 1);
+                    int card3 = sc.nextInt();
+                    if(card3 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("KB증권이 연결되었습니다.");
+                }
+                case 6 -> {
+                    System.out.println("NH투자증권의 계좌와 비밀번호를 입력하세요");
+                    System.out.println("계좌 입력");
+                    account2 = sc.next();
+                    System.out.println("비밀번호 입력");
+                    String passwd2 = sc.next();
+                    System.out.println("연결할 계좌 : " + account2);
+                    System.out.println("연결할 비밀번호 : " + passwd2);
+                    System.out.println("---------------------------");
+                    System.out.println("다음에 맞는 보안카드 번호를 입력하세요");
+                    System.out.println("보안카드 숫자 (1) : " + (int) (Math.random() * 9) + 1);
+                    int card = sc.nextInt();
+                    if(card < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (2) : " + (int) (Math.random() * 9) + 1);
+                    int card2 = sc.nextInt();
+                    if(card2 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (3) : " + (int) (Math.random() * 9) + 1);
+                    int card3 = sc.nextInt();
+                    if(card3 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("NH투자증권이 연결되었습니다.");
+                }
+                case 7 -> {
+                    System.out.println("이베스트투자증권의 계좌와 비밀번호를 입력하세요");
+                    System.out.println("계좌 입력");
+                    account2 = sc.next();
+                    System.out.println("비밀번호 입력");
+                    String passwd2 = sc.next();
+                    System.out.println("연결할 계좌 : " + account2);
+                    System.out.println("연결할 비밀번호 : " + passwd2);
+                    System.out.println("---------------------------");
+                    System.out.println("다음에 맞는 보안카드 번호를 입력하세요");
+                    System.out.println("보안카드 숫자 (1) : " + (int) (Math.random() * 9) + 1);
+                    int card = sc.nextInt();
+                    if(card < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (2) : " + (int) (Math.random() * 9) + 1);
+                    int card2 = sc.nextInt();
+                    if(card2 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (3) : " + (int) (Math.random() * 9) + 1);
+                    int card3 = sc.nextInt();
+                    if(card3 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("이베스트투자증권이 연결되었습니다.");
+                }
+                case 8 -> {
+                    System.out.println("케이프투자증권의 계좌와 비밀번호를 입력하세요");
+                    System.out.println("계좌 입력");
+                    account2 = sc.next();
+                    System.out.println("비밀번호 입력");
+                    String passwd2 = sc.next();
+                    System.out.println("연결할 계좌 : " + account2);
+                    System.out.println("연결할 비밀번호 : " + passwd2);
+                    System.out.println("---------------------------");
+                    System.out.println("다음에 맞는 보안카드 번호를 입력하세요");
+                    System.out.println("보안카드 숫자 (1) : " + (int) (Math.random() * 9) + 1);
+                    int card = sc.nextInt();
+                    if(card < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("보안카드 숫자 (2) : " + (int) (Math.random() * 9) + 1);
+                    int card2 = sc.nextInt();
+                    if(card2 < 1 || card >= 100){
+                        System.out.println("보안 카드 번호가 잘못되었습니다!");
+                    }
+                    System.out.println("케이프투자증권이 연결되었습니다.");
+                }
+                case 9 -> {
+                    System.out.println("다음 절차를 진행해주세요");
+                }
+                default -> {
+                    System.out.println("잘못된 입력입니다.");
+                }
+            }
+            this.accounts[this.account_no++] = new stock_Account(account_nickname, account_number, owner, passwd, withdraw, Birth, stock, account2);
             System.out.println("증권 계좌가 생성되었습니다.");
         } else if(option == 3){
             System.out.println("--------- 사업자(법인/개인사업자) ---------");
