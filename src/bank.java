@@ -88,19 +88,25 @@ class Account implements Bankable {
                     this.history[i].use_history_int);
         }
     }
+
+    public void setAccount_nickname(String accountNickname) {
+        this.account_nickname = accountNickname;
+    }
 }
 
 class ISA_Account extends Account {
+    int mod; // 일반형, 서민형
     int interest_rate; // 이자율
     int total_interest; // 총 이자액
     int total_inbound; // 총 가입 기간
 
     ISA_Account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate, int total_inbound, String Birth){
+            , String passwd, int interest_rate, int total_inbound, String Birth, int mod){
         super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
         this.total_inbound = total_inbound;
+        this.mod = mod;
     }
 
     public int deposit(int amount) {
@@ -134,6 +140,11 @@ class ISA_Account extends Account {
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("가입자 생년월일 : " + this.Birth);
+        if(this.mod == 1){
+            System.out.println("가입 타입 : 일반형");
+        }else {
+            System.out.println("가입 타입 : 서민형");
+        }
         System.out.println("-------------------------------------------");
     }
 }
@@ -143,9 +154,12 @@ class saving_account extends Account {
     int total_interest; // 총 이자액
 
     int total_inbound; // 총 가입 기간
+    int deposit2; // 매달 납입할 금액
+    int auto; // 자동이체 설정 여부
+    int auto2; // 만기 시 처리 방법
 
     saving_account(String account_nickname, String account_number, String owner
-            , String passwd, int interest_rate, int total_inbound, String Birth) {
+            , String passwd, int interest_rate, int total_inbound, String Birth, int deposit2, int auto, int auto2) {
         super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
@@ -181,6 +195,18 @@ class saving_account extends Account {
         System.out.printf("총 이자액 : %d원\n", this.total_interest);
         System.out.println("계좌 비밀번호 : " + this.GetPassword());
         System.out.println("가입자 생년월일 : " + this.Birth);
+        System.out.println("적금 관련 메뉴 -----------------------------");
+        System.out.printf("매달 납입할 금액 : %d원\n", this.deposit2);
+        if(this.auto == 1){
+            System.out.println("자동이체 설정 여부 : 설정");
+        } else {
+            System.out.println("자동이체 설정 여부 : 설정 안함");
+        }
+        if(this.auto2 == 1){
+            System.out.println("만기 시 처리 방법 : 자동 연장");
+        } else {
+            System.out.println("만기 시 처리 방법 : 자동 해지");
+        }
         System.out.println("-------------------------------------------");
     }
 }
@@ -408,14 +434,40 @@ class Account_manager {
             if (year < 3) {
                 year = 3;
             }
-            this.accounts[this.account_no++] = new ISA_Account(account_nickname, account_number, owner, passwd, withdraw, year, Birth);
+            System.out.println("가입 타입을 선택하세요.");
+            System.out.println("1. 일반형, 2. 서민형");
+            System.out.print("입력 : ");
+            int mod = sc.nextInt();
+            if(mod == 1){
+                System.out.println("일반형이 선택되었습니다.");
+            } else if(mod == 2){
+                System.out.println("서민형이 선택되었습니다.");
+            } else {
+                System.out.println("잘못된 입력입니다.");
+            }
+            this.accounts[this.account_no++] = new ISA_Account(account_nickname, account_number, owner, passwd, withdraw, year, Birth, mod);
             System.out.println("ISA 계좌가 생성되었습니다.");
         } else if(option == 1){
             System.out.println("--------- 적금 ---------");
+            System.out.println("매달 납입할 금액 : "); deposit = sc.nextInt();
+            System.out.println("자동이체 설정 여부 : \n 1 : 설정, 2 : 설정 안함");
+            System.out.print("입력 : "); int auto = sc.nextInt();
+            if(auto == 1){
+                System.out.println("자동이체가 설정되었습니다.");
+            } else if(auto == 2){
+                System.out.println("자동이체가 설정되지 않았습니다.");
+            } else {
+                System.out.println("잘못된 입력입니다.");
+            }
+            System.out.println("만기 시 처리 방법 ");
+            System.out.println("1. 자동 연장");
+            System.out.println("2. 자동 해지");
+            System.out.print("입력 : "); int auto2 = sc.nextInt();
+
             System.out.print("이자율 : "); withdraw = sc.nextInt();
             System.out.println("가입 기간을 입력하세요(년)");
             System.out.print("가입 기간 : "); int year = sc.nextInt();
-            this.accounts[this.account_no++] = new saving_account(account_nickname, account_number, owner, passwd, withdraw, year, Birth);
+            this.accounts[this.account_no++] = new saving_account(account_nickname, account_number, owner, passwd, withdraw, year, Birth, deposit, auto, auto2);
             System.out.println("적금 계좌가 생성되었습니다.");
         } else if(option == 2){
             System.out.println("--------- 증권 ---------");
@@ -499,8 +551,18 @@ class Account_manager {
         System.out.println("7. 대출");
         System.out.println("8. 대출 상환");
         System.out.println("-------- System Actions --------");
+        System.out.println("9. 약관 보기");
+        System.out.println("10. 계좌 삭제");
+//        System.out.println("11. 계좌 정보 수정");
+        System.out.println("-------- ETC --------");
         System.out.println("0. 종료");
         System.out.print("입력 : ");
+    }
+
+    void printIDP() {
+        System.out.println("-------- LaylaBank --------");
+        System.out.println("약관에 대한 항목을 확인해주세요.");
+        System.out.println("https://banks.layla-focalors.tech");
     }
 }
 
@@ -600,6 +662,28 @@ public class bank {
                     LocalDate now = LocalDate.now();
                     String paytitle = "대출 상환 " + now.toString();
                     account_manager.paySomething(account_number, amount, paytitle);
+                }
+                case 9 -> {
+                    System.out.println("--------- 약관 보기 ---------");
+                    account_manager.printIDP();
+                }case 10 -> {
+                    System.out.println("--------- 계좌 삭제 ---------");
+                    System.out.print("계좌 번호 : ");
+                    account_number = sc.next();
+                    System.out.print("계좌 비밀번호 : ");
+                    passwd = sc.next();
+                    int account_index = account_manager.findAccount(account_number);
+                    if(account_index == -1){
+                        System.out.println("계좌가 존재하지 않습니다.");
+                    } else {
+                        if(account_manager.accounts[account_index].GetPassword().equals(passwd)){
+                            account_manager.accounts[account_index] = null;
+                            System.out.println("계좌가 삭제되었습니다.");
+                        } else {
+                            System.out.println("비밀번호가 일치하지 않습니다.");
+                        }
+                    }
+
                 }
                 default -> System.out.println("LaylaBank : 존재하지 않는 메뉴입니다. 다시 확인해주세요");
             }
