@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Scanner;
 
 interface Bankable {
@@ -272,6 +273,8 @@ class stock_Account extends Account {
         super(account_nickname, account_number, owner, passwd, Birth);
         this.interest_rate = interest_rate;
         this.total_interest = 0;
+        this.stock = stock;
+        this.account2 = account2;
     }
 
     public int deposit(int amount) {
@@ -326,7 +329,7 @@ class stock_Account extends Account {
         }
         System.out.println("연결된 증권사 : " + output);
         String acce = "연결하지 않음";
-        if(this.account2 != "Default"){
+        if(!Objects.equals(this.account2, "Default")){
             acce = this.account2;
         }
         System.out.println("연결된 계좌 : " + acce);
