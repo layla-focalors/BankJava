@@ -326,6 +326,8 @@ class stock_Account extends Account {
             output = "케이프투자증권";
         }else if(this.stock == 9){
             output = "연결하지 않음";
+        }else {
+            output = "연결하지 않음";
         }
         System.out.println("연결된 증권사 : " + output);
         String acce = "연결하지 않음";
