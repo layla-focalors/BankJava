@@ -48,7 +48,7 @@ class Account implements Bankable {
     String getAccountNumber() { return this.account_number; }
     String GetPassword() { return this.passwd; }
 
-    @Override
+
     public int deposit(int amount) {
         this.deposit += amount;
         this.total_deposit += amount;
@@ -58,7 +58,7 @@ class Account implements Bankable {
         this.payment_no++;
         return amount;
     }
-    @Override
+
     public int withdraw(int amount, String payment_title) {
         if(this.deposit < amount) {
             System.out.println("잔액이 부족합니다.");
@@ -70,7 +70,7 @@ class Account implements Bankable {
         this.payment_no++;
         return amount;
     }
-    @Override
+
     public void printBankInfo() {
         System.out.println("------------ 계좌 정보 출력 ------------");
         System.out.printf("계좌 별칭 : %s\n", this.account_nickname);
@@ -83,7 +83,7 @@ class Account implements Bankable {
         System.out.println("가입자 생년월일 : " + this.Birth);
         System.out.println("-------------------------------------------");
     }
-    @Override
+
     public void printBankHistory() {
         System.out.println("계좌 정보 출력(내역) -----------------------------");
         for(int i=0;i<this.payment_no; i++) {
