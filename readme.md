@@ -74,4 +74,3 @@
    return -1;
    }</pre>
 
-### 시연 영상 (Github Storage)
